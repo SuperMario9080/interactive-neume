@@ -4,7 +4,8 @@ A fully interactive virtual Neume player you can play with your **Computer Keybo
 This virtual player is great for learning to sound out notes for Neume Notation and for Gregorian Chants.<br>
 It does **NOT** play neume music sheets. The primary purpose of this player is to discern sound on a neume sheet.
 
-<img width="1094" height="983" alt="int-neume" src="https://github.com/user-attachments/assets/a7a0d3e9-d08b-446f-8762-6c15ba1b06df" />
+<img width="1161" height="1056" alt="int-neume" src="https://github.com/user-attachments/assets/0cae8944-112e-44d3-8735-fc84cbb452e4" />
+
 
 ## How to Play
 Simply open the HTML file in your browser (Chrome, Firefox, etc.)<br>
