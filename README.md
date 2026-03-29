@@ -25,5 +25,5 @@ Simply open the HTML file in your browser (Chrome, Firefox, etc.)<br>
 ## C/F Clefs
 *DISCLAIMER: (The symbols aren't accurate and are placeholders for now. I might change it to simply "C" or "F")*
 
-**C Clef**: Placing this on any line becomes The Middle C or (C4) of the diatonic scale.<br>
+**C Clef**: Placing this on any line becomes The ***Middle C*** or ***(C4)*** of the diatonic scale.<br>
 **F Clef**: Placing this on any line becomes the ***'F' note*** of the diatonic scale.
