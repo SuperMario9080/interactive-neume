@@ -10,6 +10,8 @@
         .controls { max-width: 820px; margin: 15px auto; text-align: center; }
         button { font-size: 1.1em; padding: 10px 20px; margin: 0 10px; border: none; border-radius: 6px; background: #3a2f1f; color: #f8f1e3; cursor: pointer; }
         button:hover { background: #5c4a2f; }
+        button.flat-toggle { background: #8b5a2b; }
+        button.flat-toggle.active { background: #c44; color: white; }
         .info { max-width: 800px; margin: 0 auto; text-align: center; font-size: 1.1em; line-height: 1.5; }
         .legend { max-width: 800px; margin: 20px auto; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; font-size: 0.95em; }
         .key { background: #3a2f1f; color: #f8f1e3; padding: 4px 10px; border-radius: 4px; font-family: monospace; }
@@ -20,6 +22,14 @@
     
     <div class="controls">
         <button id="clefBtn">Switch to F Clef (𝄢)</button>
+        <button id="flatToggle" class="flat-toggle">Flat Mode: OFF</button>
+        <button id="transposeLeft">← Transpose</button>
+        <button id="transposeRight">Transpose →</button>
+        <button id="octaveDown">↓ Octave</button>
+        <button id="octaveUp">Octave ↑</button>
+        <span style="margin-left: 20px; font-size: 1.1em; color: #555;" id="status">
+            Transpose: 0 | Octave: 0 
+        </span>
     </div>
 
     <div class="info">
@@ -47,6 +57,7 @@
         let isFClef = false;
         let transpose = 0;
         let octaveShift = 0;
+        let flatMode = false;
 
         const C4_FREQ = 261.63;
 
@@ -193,7 +204,55 @@
             ctx.fillText(`${clefName} on line ${currentClefPos}  |  Hold Shift for ♭`, 20, 30);
             ctx.fillText(`Transpose: ${transpose} semitones  Octave: ${octaveShift}`, 20, 55);
             ctx.fillText(`Active notes: ${activeVoices.size}`, 20, 80);
+
         }
+
+        // ============== BUTTONS ==============
+        const clefBtn = document.getElementById('clefBtn');
+        const flatToggle = document.getElementById('flatToggle');
+        const transposeLeft = document.getElementById('transposeLeft');
+        const transposeRight = document.getElementById('transposeRight');
+        const octaveDown = document.getElementById('octaveDown');
+        const octaveUp = document.getElementById('octaveUp');
+        const statusEl = document.getElementById('status');
+
+        function updateStatus() {
+            statusEl.textContent = `Transpose: ${transpose} | Octave: ${octaveShift} `;
+            draw();
+        }
+
+        clefBtn.addEventListener('click', () => {
+            isFClef = !isFClef;
+            clefBtn.textContent = isFClef ? "Switch to C Clef (𝄡)" : "Switch to F Clef (𝄢)";
+            draw();
+        });
+
+        flatToggle.addEventListener('click', () => {
+            flatMode = !flatMode;
+            flatToggle.textContent = `Flat Mode: ${flatMode ? 'ON' : 'OFF'}`;
+            flatToggle.classList.toggle('active', flatMode);
+            updateStatus();
+        });
+
+        transposeLeft.addEventListener('click', () => {
+            transpose--;
+            updateStatus();
+        });
+
+        transposeRight.addEventListener('click', () => {
+            transpose++;
+            updateStatus();
+        });
+
+        octaveDown.addEventListener('click', () => {
+            octaveShift--;
+            updateStatus();
+        });
+
+        octaveUp.addEventListener('click', () => {
+            octaveShift++;
+            updateStatus();
+        });
 
         // ============== MOUSE ==============
         let dragging = false;
@@ -218,7 +277,7 @@
                 if (d < minDist) { minDist = d; closest = i; }
             }
             if (minDist < 22) {
-                mouseIsFlat = e.shiftKey;
+                mouseIsFlat = flatMode || e.shiftKey;
                 startNote(closest, mouseIsFlat);
                 mouseDownPos = closest;
             }
@@ -252,7 +311,7 @@
                 }
                 if (closest !== mouseDownPos && minDist < 22) {
                     stopNote(mouseDownPos, mouseIsFlat);
-                    mouseIsFlat = e.shiftKey;
+                    mouseIsFlat = flatMode || e.shiftKey;
                     startNote(closest, mouseIsFlat);
                     mouseDownPos = closest;
                 }
@@ -287,7 +346,7 @@
 
             const basePos = keyToPos[e.key.toLowerCase()];
             if (basePos !== undefined) {
-                const isFlat = e.shiftKey;
+                const isFlat = flatMode || e.shiftKey;
                 const keyStr = e.key.toLowerCase();
                 if (!pressedKeys.has(keyStr)) {
                     startNote(basePos, isFlat);
@@ -306,14 +365,6 @@
                     pressedKeys.delete(keyStr);
                 }
             }
-        });
-
-        // ============== CLEF BUTTON ==============
-        const clefBtn = document.getElementById('clefBtn');
-        clefBtn.addEventListener('click', () => {
-            isFClef = !isFClef;
-            clefBtn.textContent = isFClef ? "Switch to C Clef (𝄡)" : "Switch to F Clef (𝄢)";
-            draw();
         });
 
         // ============== INIT ==============
