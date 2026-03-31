@@ -21,7 +21,7 @@
     <h1>Interactive Neume</h1>
     
     <div class="controls">
-        <button id="clefBtn">Switch to F Clef (𝄢)</button>
+        <button id="clefBtn">Switch to F Clef</button>
         <button id="flatToggle" class="flat-toggle">Flat Mode: OFF</button>
         <button id="transposeLeft">← Transpose</button>
         <button id="transposeRight">Transpose →</button>
@@ -152,7 +152,7 @@
             ctx.font = 'bold 68px serif';
             ctx.textBaseline = 'middle';
             ctx.fillStyle = '#3a2f1f';
-            ctx.fillText(isFClef ? '𝄢' : '𝄡', 65, clefY + 4);
+            ctx.fillText(isFClef ? 'F' : 'C', 65, clefY + 4);
 
             // barline
             ctx.lineWidth = 4;
@@ -223,7 +223,7 @@
 
         clefBtn.addEventListener('click', () => {
             isFClef = !isFClef;
-            clefBtn.textContent = isFClef ? "Switch to C Clef (𝄡)" : "Switch to F Clef (𝄢)";
+            clefBtn.textContent = isFClef ? "Switch to C Clef" : "Switch to F Clef";
             draw();
         });
 
